@@ -4,13 +4,9 @@
     "slug": "AwesomeProject1",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/aboutreact.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
+  
     "updates": {
       "fallbackToCacheTimeout": 0
     },

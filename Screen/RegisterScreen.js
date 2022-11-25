@@ -2,7 +2,7 @@
 // https://aboutreact.com/react-native-login-and-signup/
  
 // Import React and Component
-import React, {useState, createRef,useEffect} from 'react';
+import React, {useState, createRef} from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -22,8 +22,9 @@ import Loader from './Components/Loader';
 const RegisterScreen = (props) => {
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
-  const [userAge, setUserAge] = useState('');
-  const [userAddress, setUserAddress] = useState('');
+  const [role, setRole] = useState('');
+  const [countryCode, setCountryCode] = useState('');
+  const [userPhone, setUserPhone] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState('');
@@ -48,22 +49,22 @@ const RegisterScreen = (props) => {
       alert('Please fill Email');
       return;
     }
-    // if (!userAge) {
-    //   alert('Please fill Age');
-    //   return;
-    // }
-    // if (!userAddress) {
-    //   alert('Please fill Address');
-    //   return;
-    // }
+    if (!role) {
+      alert('Please fill role');
+      return;
+    }
+    if (!countryCode) {
+      alert('Please fill countryCode');
+      return;
+    }
     if (!userPassword) {
       alert('Please fill Password');
       return;
     }
     //Show Loader
-    setLoading(false);
+    setLoading(true);
     var dataToSend = JSON.stringify({
-      firstName: userName,
+      name: userName,
       email: userEmail,
       // age: userAge,
       // address: userAddress,
@@ -71,57 +72,54 @@ const RegisterScreen = (props) => {
     });
     
     console.log('data to send',dataToSend)
+    // var formBody = [];
+    // for (var key in dataToSend) {
+    //   var encodedKey = encodeURIComponent(key);
+    //   var encodedValue = encodeURIComponent(dataToSend[key]);
+    //   formBody.push(encodedKey + '=' + encodedValue);
+    // }
+    // formBody = formBody.join('&');
     const url = 'http://3.139.100.146:4002/api/registerData'
-    // const obj = JSON.parse('{"password":"123","email":"email.er@gmail.com","name":"333"}');
-// console.log('objeee',obj)
 
 fetch(url, {
-  method: 'POST',
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
+ method: 'POST',
+ headers: {
+  'Accept': 'application/json',
+   'Content-Type': 'application/json',
   },
    body: dataToSend
-})
-  .then(responseJson =>responseJson.json())
-    .then(responseJson => console.log('response from api',responseJson));
-
-  setLoading(false)
-    setIsRegistraionSuccess(true);
-    console.log(
-          'Registration Successful. Please Login to proceed'
-        );
-   // returns promise
-  // .then(responseJson => console.log('dfdfddff',responseJson));
- // .then((responseJson) =>=>responseJson.json() {
-      //   //Hide Loader
-        // setLoading(false);
-      //  console.log (';ffghhf',JSON.parse(JSON.stringify(responseJson)))
-        // console.log("response =====is",responseJson.json());
-        // If server response message same as Data Matched
-        // // if (responseJson) {
-        //   setIsRegistraionSuccess(true);
-        //  
-        // } else {
-        //   setErrortext(responseJson.msg);
-        // }
-      // })
-      // .catch((error) => {
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
         //Hide Loader
-        // setLoading(false);
-        // console.error(error);
-      // });
+        setLoading(false);
+        console.log("response from register api",responseJson);
+        // If server response message same as Data Matched
+        if (responseJson.message === 'User Registered') {
+          setIsRegistraionSuccess(true);
+          console.log(
+            'Registration Successful. Please Login to proceed'
+          );
+        } else {
+          setErrortext(responseJson.message);
+        }
+      })
+      .catch((error) => {
+        //Hide Loader
+        setLoading(false);
+        console.error(error);
+      });
   };
   if (isRegistraionSuccess) {
     return (
-      <SafeAreaView
+      <View
         style={{
           flex: 1,
-          backgroundColor: 'grey',
+          backgroundColor: '#181D62',
           justifyContent: 'center',
         }}>
         <Image
-           source={require('../assets/icon.png')}
+           source={require('../assets/aboutreact.png')}
           style={{
             height: 150,
             resizeMode: 'contain',
@@ -137,11 +135,11 @@ fetch(url, {
           onPress={() => props.navigation.navigate('LoginScreen')}>
           <Text style={styles.buttonTextStyle}>Login Now</Text>
         </TouchableOpacity>
-      </SafeAreaView>
+      </View>
     );
   }
   return (
-    <View style={{flex: 1, backgroundColor: '#307ecc'}}>
+    <View style={{flex: 1, backgroundColor: '#2A6947'}}>
       <Loader loading={loading} />
       <ScrollView
         keyboardShouldPersistTaps="handled"
@@ -151,7 +149,7 @@ fetch(url, {
         }}>
         <View style={{alignItems: 'center'}}>
           <Image
-            source={require('../assets/icon.png')}
+            source={require('../assets/aboutreact.png')}
             style={{
               width: '50%',
               height: 100,
@@ -212,12 +210,12 @@ fetch(url, {
               blurOnSubmit={false}
             />
           </View>
-          {/* <View style={styles.SectionStyle}>
+          <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={(UserAge) => setUserAge(UserAge)}
+              onChangeText={(useRole) => setRole(useRole)}
               underlineColorAndroid="#f000"
-              placeholder="Enter Age"
+              placeholder="Enter Role"
               placeholderTextColor="#8b9cb5"
               keyboardType="numeric"
               ref={ageInputRef}
@@ -228,15 +226,15 @@ fetch(url, {
               }
               blurOnSubmit={false}
             />
-          </View> */}
-          {/* <View style={styles.SectionStyle}>
+          </View>
+          <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={(UserAddress) =>
-                setUserAddress(UserAddress)
+              onChangeText={(countryCode) =>
+                setCountryCode(countryCode)
               }
               underlineColorAndroid="#f000"
-              placeholder="Enter Address"
+              placeholder="Enter Country Code"
               placeholderTextColor="#8b9cb5"
               autoCapitalize="sentences"
               ref={addressInputRef}
@@ -244,7 +242,7 @@ fetch(url, {
               onSubmitEditing={Keyboard.dismiss}
               blurOnSubmit={false}
             />
-          </View> */}
+          </View>
           {errortext != '' ? (
             <Text style={styles.errorTextStyle}>
               {errortext}
@@ -255,6 +253,12 @@ fetch(url, {
             activeOpacity={0.5}
             onPress={handleSubmitButton}>
             <Text style={styles.buttonTextStyle}>REGISTER</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.registerTextStyle}
+            activeOpacity={0.5}
+            onPress={() => props.navigation.navigate('LoginScreen')}>    
+               <Text style={styles.buttonTextStyle}>Already have an account?</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
       </ScrollView>
@@ -309,5 +313,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     padding: 30,
+  },
+  registerTextStyle: {
+    color: '#FFFFFF',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 14,
+    alignSelf: 'center',
+    padding: 10,
   },
 });

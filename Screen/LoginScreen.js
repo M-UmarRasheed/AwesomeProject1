@@ -93,7 +93,7 @@ const LoginScreen = ({navigation}) => {
           <KeyboardAvoidingView enabled>
             <View style={{alignItems: 'center'}}>
               <Image
-                 source={require('../assets/icon.png')}
+                 source={require('../assets/aboutreact.png')}
                 style={{
                   width: '50%',
                   height: 100,
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
   mainBody: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#307ecc',
+    backgroundColor: '#091A1E',
     alignContent: 'center',
   },
   SectionStyle: {
