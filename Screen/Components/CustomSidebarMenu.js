@@ -18,12 +18,12 @@ const CustomSidebarMenu = (props) => {
     <View style={stylesSidebar.sideMenuContainer}>
       <View style={stylesSidebar.profileHeader}>
         <View style={stylesSidebar.profileHeaderPicCircle}>
-          <Text style={{fontSize: 25, color: '#307ecc'}}>
-            {'About React'.charAt(0)}
+          <Text style={{fontSize: 25, color: 'green'}}>
+            {'Muhammad Umar Rasheed'.charAt(0)}
           </Text>
         </View>
         <Text style={stylesSidebar.profileHeaderText}>
-          AboutReact
+          Muhammad Umar
         </Text>
       </View>
       <View style={stylesSidebar.profileHeaderLine} />
@@ -71,7 +71,7 @@ const stylesSidebar = StyleSheet.create({
   sideMenuContainer: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#307ecc',
+    backgroundColor: 'grey',
     paddingTop: 40,
     color: 'white',
   },

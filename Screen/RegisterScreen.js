@@ -2,7 +2,7 @@
 // https://aboutreact.com/react-native-login-and-signup/
  
 // Import React and Component
-import React, {useState, createRef} from 'react';
+import React, {useState, createRef,useEffect} from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -13,6 +13,8 @@ import {
   Keyboard,
   TouchableOpacity,
   ScrollView,
+  SafeAreaView,
+  FlatList
 } from 'react-native';
  
 import Loader from './Components/Loader';
@@ -25,10 +27,11 @@ const RegisterScreen = (props) => {
   const [userPassword, setUserPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState('');
+  const [data,setData] = useState({})
   const [
     isRegistraionSuccess,
     setIsRegistraionSuccess
-  ] = useState(true);
+  ] = useState(false);
  
   const emailInputRef = createRef();
   const ageInputRef = createRef();
@@ -45,71 +48,76 @@ const RegisterScreen = (props) => {
       alert('Please fill Email');
       return;
     }
-    if (!userAge) {
-      alert('Please fill Age');
-      return;
-    }
-    if (!userAddress) {
-      alert('Please fill Address');
-      return;
-    }
+    // if (!userAge) {
+    //   alert('Please fill Age');
+    //   return;
+    // }
+    // if (!userAddress) {
+    //   alert('Please fill Address');
+    //   return;
+    // }
     if (!userPassword) {
       alert('Please fill Password');
       return;
     }
     //Show Loader
     setLoading(false);
-    var dataToSend = {
-      name: userName,
+    var dataToSend = JSON.stringify({
+      firstName: userName,
       email: userEmail,
-      age: userAge,
-      address: userAddress,
+      // age: userAge,
+      // address: userAddress,
       password: userPassword,
-    };
-    // var formBody = [];
-    // for (var key in dataToSend) {
-    //   var encodedKey = encodeURIComponent(key);
-    //   var encodedValue = encodeURIComponent(dataToSend[key]);
-    //   formBody.push(encodedKey + '=' + encodedValue);
-    // }
-    // formBody = formBody.join('&');
- 
-    // fetch('http://localhost:4002/api/registerData', {
-    //     method: 'POST',
-    //     headers: {
-    //       Accept: 'application/json',
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(dataToSend)
-    // })
-  
-    //   .then((response) => response.json())
-    //   .then((responseJson) => {
-    //     //Hide Loader
-    //     setLoading(false);
-    //     console.log("response",responseJson);
-    //     // If server response message same as Data Matched
-//         if (responseJson.status === 'success') {
-//           setIsRegistraionSuccess(true);
-//           console.log(
-//             'Registration Successful. Please Login to proceed'
-//           );
-//         } else {
-//           setErrortext(responseJson.msg);
-//         }
-//       })
-//       .catch((error) => {
-//         //Hide Loader
-//         setLoading(false);
-//         console.error(error);
-    //   });
+    });
+    
+    console.log('data to send',dataToSend)
+    const url = 'http://3.139.100.146:4002/api/registerData'
+    // const obj = JSON.parse('{"password":"123","email":"email.er@gmail.com","name":"333"}');
+// console.log('objeee',obj)
+
+fetch(url, {
+  method: 'POST',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+  },
+   body: dataToSend
+})
+  .then(responseJson =>responseJson.json())
+    .then(responseJson => console.log('response from api',responseJson));
+
+  setLoading(false)
+    setIsRegistraionSuccess(true);
+    console.log(
+          'Registration Successful. Please Login to proceed'
+        );
+   // returns promise
+  // .then(responseJson => console.log('dfdfddff',responseJson));
+ // .then((responseJson) =>=>responseJson.json() {
+      //   //Hide Loader
+        // setLoading(false);
+      //  console.log (';ffghhf',JSON.parse(JSON.stringify(responseJson)))
+        // console.log("response =====is",responseJson.json());
+        // If server response message same as Data Matched
+        // // if (responseJson) {
+        //   setIsRegistraionSuccess(true);
+        //  
+        // } else {
+        //   setErrortext(responseJson.msg);
+        // }
+      // })
+      // .catch((error) => {
+        //Hide Loader
+        // setLoading(false);
+        // console.error(error);
+      // });
   };
   if (isRegistraionSuccess) {
     return (
-      <View
+      <SafeAreaView
         style={{
           flex: 1,
-          backgroundColor: '#307ecc',
+          backgroundColor: 'grey',
           justifyContent: 'center',
         }}>
         <Image
@@ -129,7 +137,7 @@ const RegisterScreen = (props) => {
           onPress={() => props.navigation.navigate('LoginScreen')}>
           <Text style={styles.buttonTextStyle}>Login Now</Text>
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
     );
   }
   return (
@@ -204,7 +212,7 @@ const RegisterScreen = (props) => {
               blurOnSubmit={false}
             />
           </View>
-          <View style={styles.SectionStyle}>
+          {/* <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
               onChangeText={(UserAge) => setUserAge(UserAge)}
@@ -220,8 +228,8 @@ const RegisterScreen = (props) => {
               }
               blurOnSubmit={false}
             />
-          </View>
-          <View style={styles.SectionStyle}>
+          </View> */}
+          {/* <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
               onChangeText={(UserAddress) =>
@@ -236,7 +244,7 @@ const RegisterScreen = (props) => {
               onSubmitEditing={Keyboard.dismiss}
               blurOnSubmit={false}
             />
-          </View>
+          </View> */}
           {errortext != '' ? (
             <Text style={styles.errorTextStyle}>
               {errortext}

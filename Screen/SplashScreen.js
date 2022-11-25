@@ -13,18 +13,19 @@ import {
  
 const SplashScreen = ({navigation}) => {
   //State for ActivityIndicator animation
-  const [animating, setAnimating] = useState(true);
+  const [animating, setAnimating] = useState(false);
  
-//   useEffect(() => {
-//     setTimeout(() => {
-//       setAnimating(false);
-//       //Check if user_id is set or not
-//       //If not then send for Authentication
-//       //else send to Home Screen
-//     }, 
-//     5000
-//     );
-//   }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      setAnimating(false);
+      navigation.replace('DrawerNavigationRoutes')
+      //Check if user_id is set or not
+      //If not then send for Authentication
+      //else send to Home Screen
+    }, 
+    3000
+    );
+  }, []);
  
   return (
     <View style={styles.container}>
@@ -49,10 +50,16 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#307ecc',
+    backgroundColor: 'orange',
   },
   activityIndicator: {
     alignItems: 'center',
     height: 80,
   },
+  successTextStyle: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 18,
+    padding: 30,
+  }
 });

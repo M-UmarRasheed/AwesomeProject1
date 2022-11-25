@@ -9,7 +9,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
  
-// Import Screens
+// Import Screen
 import SplashScreen from './Screen/SplashScreen';
 import LoginScreen from './Screen/LoginScreen';
 import RegisterScreen from './Screen/RegisterScreen';
@@ -47,11 +47,11 @@ const Auth = () => {
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="login">
+      <Stack.Navigator initialRouteName="splashScreen">
         {/* SplashScreen which will come once for 5 Seconds */}
         <Stack.Screen
           name="SplashScreen"
-          component={Auth}
+          component={SplashScreen} //will be written 'splashScreen' in component
           // Hiding header for Splash Screen
           options={{headerShown: false}}
         />
