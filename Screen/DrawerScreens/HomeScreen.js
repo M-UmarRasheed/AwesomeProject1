@@ -2,19 +2,62 @@
 // https://aboutreact.com/react-native-login-and-signup/
  
 // Import React and Component
-import React from 'react';
-import {View, Text, SafeAreaView,StyleSheet,TouchableOpacity} from 'react-native';
- 
+import React, { useEffect, useState } from 'react';
+import {View, Text, SafeAreaView,StyleSheet,TouchableOpacity,FlatList} from 'react-native';
 const HomeScreen = (props) => {
+  const [data,setData] = useState([])
+  const [loading,setLoading] = useState(true)
+
+  const url = 'http://3.139.100.146:4002/api/getAllRecord'
+ 
+ useEffect(()=>{
+  fetch(url,{
+  method: 'GET',
+  headers: {
+  'content-type':'application/json',
+  'Accept':'application/json'
+},
+  })
+  .then((response)=>response.json())
+  .then((responseJson) =>  {
+    console.log('res',responseJson)
+    setData(responseJson.data)
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
+  .finally(()=>setLoading(false))
+ },[])
   return (
     <SafeAreaView style={{flex: 1}}>
-      <View style={{flex: 1, padding: 16}}>
+      <View style={styles.container}>
         <View
           style={{
             flex: 1,
             alignItems: 'center',
             justifyContent: 'center',
           }}>
+            <View>
+            {
+              loading ?(<Text>Loading</Text>):(
+        data.map((post)=>(
+          <View style ={styles.item}>
+        <Text>
+            {post.firstName}
+          </Text>
+          <Text>
+            {post.lastName}
+          </Text>
+          <Text>
+            {post.phoneNumber}
+          </Text>
+          <Text>
+            {post.email}
+          </Text>
+          </View>
+        ))
+      )}
+       </View>
           <Text
             style={{
               fontSize: 20,
@@ -33,7 +76,7 @@ const HomeScreen = (props) => {
             color: 'grey',
           }}>
           Splash, Login and Register Example{'\n'}React Native
-        </Text>
+        </Text>  
         <TouchableOpacity
               style={styles.buttonStyle}
               activeOpacity={0.5}
@@ -51,6 +94,20 @@ const HomeScreen = (props) => {
 };
  
 const styles = StyleSheet.create({
+  item: {
+    padding: 20,
+    fontSize: 15,
+    marginTop: 5,
+  },
+  container:{
+    
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'grey',
+    alignContent: 'center',
+    justifyContent:'flex-start',
+    height: 20,
+  },
   mainBody: {
     flex: 1,
     justifyContent: 'center',
